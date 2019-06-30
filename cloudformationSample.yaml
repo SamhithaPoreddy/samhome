@@ -66,8 +66,8 @@ Resources:
               InputArtifacts:
                 - Name: SourceOutput
               OutputArtifacts:
-                - Name: BuildOutput
-                                
+                - Name: TestOutput
+
         - Name: Deploy
           Actions:
             - Name: Prepare
@@ -180,6 +180,7 @@ Resources:
                   - codebuild:StartBuild
                 Resource:
                   - !GetAtt CodeBuildProject.Arn
+                  - !GetAtt CodeBuildTestProject.Arn
               - Effect: Allow
                 Action:
                   - cloudformation:DescribeStacks
@@ -236,6 +237,8 @@ Resources:
                 Resource:
                   - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${RepositoryName}-build
                   - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${RepositoryName}-build:*
+                  - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${RepositoryName}-test
+                  - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${RepositoryName}-test:*
               - Effect: Allow
                 Action:
                   - s3:GetObject
